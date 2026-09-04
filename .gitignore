@@ -11,7 +11,7 @@ outputs/
 .pytest_cache/
 .ruff_cache/
 .DS_Store
-audio_data/Shivalingaiah Colony 2.m4a
+audio_data/
 
 grammars
 grammars/*
