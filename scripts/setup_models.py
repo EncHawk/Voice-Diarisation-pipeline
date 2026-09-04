@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import pathlib
 import subprocess
-import sys
 import urllib.request
 
 MODELS_DIR = pathlib.Path("models")

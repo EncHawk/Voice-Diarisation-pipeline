@@ -6,7 +6,6 @@ import pathlib
 import sqlite3
 import time
 
-
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS recordings (
     id TEXT PRIMARY KEY,

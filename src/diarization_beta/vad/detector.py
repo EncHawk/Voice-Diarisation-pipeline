@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import dataclasses
-import pathlib
 from typing import List
 
 import numpy as np
@@ -27,6 +26,7 @@ class VADDetector:
         speech_pad_ms: int = 30,
         window_size_samples: int = 512,
         sample_rate: int = 16000,
+        model: str = "silero_vad",
     ):
         self.threshold = threshold
         self.min_speech_ms = min_speech_duration_ms
@@ -34,6 +34,7 @@ class VADDetector:
         self.pad_ms = speech_pad_ms
         self.window = window_size_samples
         self.sr = sample_rate
+        self.model = model
         self._silero = None  # lazy
 
     # -- silero --
@@ -55,16 +56,11 @@ class VADDetector:
         if not model:
             return None
         try:
-            # silero_vad v5 API: get_speech_timestamps
+            # silero_vad v5 ONNX accepts float32 numpy directly (no torch needed)
             from silero_vad import get_speech_timestamps
 
-            # get_speech_timestamps expects torch tensor but onnx model accepts numpy?
-            # The pip package handles numpy via onnx.
-            import torch
-
-            wav = torch.from_numpy(audio)
             stamps = get_speech_timestamps(
-                wav,
+                audio.astype(np.float32),
                 model,
                 threshold=self.threshold,
                 min_speech_duration_ms=self.min_speech_ms,
@@ -80,25 +76,8 @@ class VADDetector:
                 # approximate probability as 0.96 if present; real model returns probs separately
                 segs.append(VADSegment(start=start, end=end, speech_probability=0.96))
             return segs
-        except Exception as e:
-            # If torch unavailable or API mismatch, fall back
-            # Try alternative import path
-            try:
-                from silero_vad.utils_vad import get_speech_timestamps as gst2
-                import torch
-
-                wav = torch.from_numpy(audio)
-                stamps = gst2(
-                    wav,
-                    model,
-                    threshold=self.threshold,
-                    sampling_rate=self.sr,
-                    min_speech_duration_ms=self.min_speech_ms,
-                    min_silence_duration_ms=self.min_silence_ms,
-                )
-                return [VADSegment(s["start"] / self.sr, s["end"] / self.sr, 0.96) for s in stamps]
-            except Exception:
-                return None
+        except Exception:
+            return None
 
     # -- energy fallback (works well for clean TTS) --
     def _energy_detect(self, audio: np.ndarray) -> List[VADSegment]:
@@ -171,8 +150,16 @@ class VADDetector:
     def detect(self, audio: np.ndarray) -> List[VADSegment]:
         if audio.size == 0:
             return []
-        # Try Silero first
-        silero = self._silero_detect(audio)
-        if silero is not None:
-            return silero
+        if self.model == "silero_vad":
+            # Silero is the configured VAD; if it cannot load that is a hard
+            # failure, never a silent downgrade to the energy heuristic.
+            if self._try_load_silero() is None:
+                raise RuntimeError(
+                    "vad.model=silero_vad but the Silero model could not be loaded. "
+                    "Install it with: uv add silero-vad (or uv sync --extra vad)."
+                )
+            segs = self._silero_detect(audio)
+            if segs is None:
+                raise RuntimeError("Silero VAD inference failed; refusing energy fallback (vad.model=silero_vad).")
+            return segs
         return self._energy_detect(audio)

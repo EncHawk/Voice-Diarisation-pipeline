@@ -67,7 +67,8 @@ def concat_wavs(wav_paths: list[pathlib.Path], out_path: pathlib.Path, silence_m
             data = data.mean(axis=1)
         if s != 16000:
             # resample via ffmpeg already did; but handle if not
-            import subprocess, tempfile
+            import subprocess
+            import tempfile
 
             with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
                 tmp2 = pathlib.Path(tmp.name)

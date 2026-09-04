@@ -46,8 +46,8 @@ def correct(
 ):
     cfg = load_config()
     db_path = db or pathlib.Path(cfg.get("storage", {}).get("db_path", "diarization.db") if isinstance(cfg.get("storage"), dict) else "diarization.db")
-    from ..storage.sqlite import Storage
     from ..identity.corrections import apply_correction
+    from ..storage.sqlite import Storage
 
     storage = Storage(db_path)
     segments = storage.get_segments(recording_id)

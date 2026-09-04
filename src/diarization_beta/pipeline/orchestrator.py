@@ -24,24 +24,26 @@ def process_file(
 ) -> dict:
     """Run full pipeline on a single file. Returns result dict with paths."""
     from ..audio.loader import load_audio
-    from ..audio.preprocess import normalize, slice_segment
-    from ..vad.detector import VADDetector
-    from ..diarization.embeddings import EmbeddingExtractor
+    from ..audio.preprocess import normalize
+    from ..config import load_config
     from ..diarization.clustering import cluster_embeddings
+    from ..diarization.embeddings import EmbeddingExtractor
     from ..diarization.speaker_profile import build_profiles
-    from ..alignment.timestamp_alignment import align
     from ..entities.name_extractor import (
         extract_entities,
         heuristic_evidence,
         is_model_name_candidate,
-        is_plausible_name,
         name_usage_supported,
     )
-    from ..reasoning.context_builder import build_context, build_llm_prompt, build_name_listing_prompt
-    from ..reasoning.evidence_extractor import merge_evidence, evidence_to_resolver_format
-    from ..identity.resolver import resolve_identities
     from ..identity.confidence import should_display_name
-    from ..config import load_config
+    from ..identity.resolver import resolve_identities
+    from ..reasoning.context_builder import (
+        build_context,
+        build_llm_prompt,
+        build_name_listing_prompt,
+    )
+    from ..reasoning.evidence_extractor import evidence_to_resolver_format, merge_evidence
+    from ..vad.detector import VADDetector
 
     if config is None:
         config = load_config()
@@ -78,6 +80,7 @@ def process_file(
         speech_pad_ms=int(vad_cfg.get("speech_pad_ms", 30)),
         window_size_samples=int(vad_cfg.get("window_size_samples", 512)),
         sample_rate=sr,
+        model=str(vad_cfg.get("model", "silero_vad")),
     )
     vad_segments = vad.detect(audio)
     print(f"[pipeline] VAD: {len(vad_segments)} speech segments")
@@ -175,7 +178,6 @@ def process_file(
         pass
     else:
         import tempfile
-        import pathlib as pl
 
         # Write mono 16k wav temp for whisper
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:

@@ -236,6 +236,7 @@ dependencies = [
     { name = "pydantic" },
     { name = "pyyaml" },
     { name = "scikit-learn" },
+    { name = "silero-vad" },
     { name = "soundfile" },
     { name = "typer" },
 ]
@@ -277,6 +278,7 @@ requires-dist = [
     { name = "pyyaml", specifier = ">=6.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.6" },
     { name = "scikit-learn", specifier = ">=1.5" },
+    { name = "silero-vad", specifier = ">=6.2.1" },
     { name = "silero-vad", marker = "extra == 'vad'", specifier = ">=5.0" },
     { name = "soundfile", specifier = ">=0.12" },
     { name = "speechbrain", marker = "extra == 'export'", specifier = ">=1.0" },

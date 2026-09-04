@@ -8,7 +8,6 @@ from __future__ import annotations
 
 from typing import Iterable, List
 
-
 # These are language/transcription artifacts, not participant names.  The
 # LLM name-listing pass is still the primary filter for real recordings.
 # Only closed-class English words (function words, interrogatives,
@@ -186,11 +185,16 @@ def _name_is_vocative(text: str, occurrence: tuple[int, int]) -> bool:
     if previous is None:
         return True
     normalized = previous.strip("-'\u2019").casefold()
-    # The neighbouring word must be an address signal.  A bare clause comma
-    # is not enough: the subject after an adverbial ("At a stroke, flooding
-    # in ...") is not an addressee, and a capitalized proper-noun neighbour
-    # ("Langford Road, ...") is part of a multi-word place name.
-    return normalized in ADDRESS_PREFIX_WORDS or normalized in HONORIFIC_TITLES
+    if normalized in ADDRESS_PREFIX_WORDS or normalized in HONORIFIC_TITLES:
+        return True
+    # A trailing vocative sits at the end of its clause: ", Dan." / ", Dan?" /
+    # ", Dan" (end of segment).  A mid-clause comma subject ("At a stroke,
+    # flooding in ...") is followed by more words and is not an addressee.
+    if prefix.endswith(","):
+        if suffix == "":
+            return True
+        return suffix[0] in ".!?"
+    return False
 
 
 def _previous_word(text: str, index: int) -> str | None:

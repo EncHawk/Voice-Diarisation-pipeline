@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import pathlib
+
 import yaml
 
 DEFAULT_CONFIG_PATH = pathlib.Path(__file__).parent.parent.parent / "config" / "default.yaml"

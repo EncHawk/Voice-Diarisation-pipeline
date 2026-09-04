@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import collections
 
-
 DEFAULT_WEIGHTS = {
     "VOICE_SIMILARITY": 0.25,
     "DIRECT_ADDRESS": 0.30,

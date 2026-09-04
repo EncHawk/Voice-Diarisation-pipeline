@@ -20,3 +20,8 @@ tests/*
 
 RESULT.md
 SPEC.md
+
+evals.md
+evals/
+scripts/run_evals.py
+scripts/_eval_worker.py

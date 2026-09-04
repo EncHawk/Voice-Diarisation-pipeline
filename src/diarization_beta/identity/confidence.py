@@ -1,7 +1,6 @@
 """Confidence states (spec §15)."""
 from __future__ import annotations
 
-
 STATUSES = ("unknown", "candidate", "identified", "confirmed")
 
 

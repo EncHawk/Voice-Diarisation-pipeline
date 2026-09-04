@@ -7,7 +7,6 @@ import re
 import subprocess
 import tempfile
 
-
 JSON_SCHEMA = {
     "type": "object",
     "properties": {
