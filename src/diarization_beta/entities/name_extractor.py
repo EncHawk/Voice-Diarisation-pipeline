@@ -358,27 +358,30 @@ def heuristic_evidence(aligned_segments: list[dict], candidate_names: Iterable[s
                 )
 
     # A following turn from a different voice is evidence for the addressed name.
+    # The responder may be a few segments later (whisper often splits one turn,
+    # and the addressed speaker may pause before replying), so scan forward past
+    # consecutive segments from the same speaker.
     for item in list(evidence):
         if item["type"] != "direct_address":
             continue
         index = item["segment_index"]
-        if index + 1 >= len(aligned_segments):
-            continue
-        following = aligned_segments[index + 1]
-        following_speaker = following.get("speaker_id", following.get("speaker", ""))
-        if following_speaker and following_speaker != item["speaker"]:
-            evidence.append(
-                {
-                    "type": "response_to_address",
-                    "speaker": following_speaker,
-                    "candidate_name": item["target_name"],
-                    "confidence": float(item.get("confidence", 0.70)),
-                    "evidence": f"{following_speaker} responded after {item['speaker']} addressed {item['target_name']}",
-                    "segment_index": index + 1,
-                    "segment_id": following.get("segment_id"),
-                    "source_evidence": item,
-                }
-            )
+        for look in range(index + 1, min(index + 5, len(aligned_segments))):
+            following = aligned_segments[look]
+            following_speaker = following.get("speaker_id", following.get("speaker", ""))
+            if following_speaker and following_speaker != item["speaker"]:
+                evidence.append(
+                    {
+                        "type": "response_to_address",
+                        "speaker": following_speaker,
+                        "candidate_name": item["target_name"],
+                        "confidence": float(item.get("confidence", 0.70)),
+                        "evidence": f"{following_speaker} responded after {item['speaker']} addressed {item['target_name']}",
+                        "segment_index": look,
+                        "segment_id": following.get("segment_id"),
+                        "source_evidence": item,
+                    }
+                )
+                break
     return evidence
 
 

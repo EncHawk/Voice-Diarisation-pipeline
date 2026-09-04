@@ -119,8 +119,39 @@ def resolve_identities(
             result[sid] = {"candidate_name": None, "confidence": 0.0, "status": "unknown", "evidence": [], "all_evidence": evs}
             continue
 
-        # Pick best name
+        # Conflict detection: one voice with competing strong identities is a
+        # clustering/extraction artifact (e.g. two speakers merged into one
+        # cluster, each self-identifying).  A wrong name is worse than an
+        # honest unknown (spec §15), so refuse to pick.
+        self_id_names = {
+            ev.get("name") or ev.get("candidate_name")
+            for ev in evs
+            if ev.get("type") == "self_identification" and (ev.get("name") or ev.get("candidate_name"))
+        }
         best_name, best_raw = max(name_scores.items(), key=lambda kv: kv[1])
+        conflicted = False
+        if len(self_id_names) > 1:
+            conflicted = True
+        elif len(self_id_names) == 1:
+            self_id_name = next(iter(self_id_names))
+            rival_raw = max(
+                (raw for nm, raw in name_scores.items() if nm != self_id_name),
+                default=0.0,
+            )
+            if rival_raw >= 0.25 * best_raw:
+                conflicted = True
+        if conflicted:
+            result[sid] = {
+                "candidate_name": None,
+                "confidence": 0.0,
+                "status": "unknown",
+                "evidence": [],
+                "all_evidence": evs,
+                "conflict_names": sorted({*self_id_names, *name_scores.keys()}),
+            }
+            continue
+
+        # Pick best name
         # Normalize confidence: logistic-like mapping
         # Sum of weights up to ~1.0-1.5 = high confidence
         # Use: conf = 1 - exp(-k * raw_sum) with bonus for multiplicity

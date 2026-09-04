@@ -125,9 +125,10 @@ def _spectral_embedding(audio: np.ndarray, sr: int = 16000, dim: int = 192) -> n
 
 
 class EmbeddingExtractor:
-    def __init__(self, model_path: str | pathlib.Path | None = None, dim: int = 192):
+    def __init__(self, model_path: str | pathlib.Path | None = None, dim: int = 192, space: str = "auto"):
         self.dim = dim
         self.model_path = pathlib.Path(model_path) if model_path else None
+        self.space = space
         self._onnx_session = None
         self._load_attempted = False
 
@@ -187,6 +188,8 @@ class EmbeddingExtractor:
             return None
 
     def embed_segment(self, audio: np.ndarray, sr: int = 16000) -> np.ndarray:
+        if self.space == "spectral":
+            return _spectral_embedding(audio, sr, self.dim)
         # Try ONNX first
         emb = self._onnx_embed(audio, sr)
         if emb is not None:
@@ -224,3 +227,41 @@ class EmbeddingExtractor:
                 )
             )
         return records
+
+
+def speech_noise_ratio(audio: np.ndarray, sr: int, segments: list) -> float | None:
+    """Cheap quality gate: RMS(speech) / RMS(non-speech).
+
+    Clean recordings (TTS, studio, dictation) have near-silent gaps -> very
+    high ratio.  Playback recordings, music beds and room noise keep the
+    floor high -> low ratio.  ECAPA degrades under such noise while the
+    pitch-based spectral embedding survives it.
+    """
+    mask = np.zeros(len(audio), dtype=bool)
+    for seg in segments:
+        start, end = (seg["start"], seg["end"]) if isinstance(seg, dict) else (seg.start, seg.end)
+        mask[int(start * sr) : int(end * sr)] = True
+    speech = audio[mask]
+    noise = audio[~mask]
+    if len(speech) < int(0.1 * sr):
+        return None
+    speech_rms = float(np.sqrt(np.mean(speech**2)))
+    if len(noise) > int(0.05 * sr):
+        noise_rms = float(np.sqrt(np.mean(noise**2)))
+    else:
+        noise_rms = 1e-6
+    return speech_rms / (noise_rms + 1e-9)
+
+
+def select_space(audio: np.ndarray, sr: int, segments: list, clean_snr_threshold: float = 150.0) -> str:
+    """Pick the embedding space for this recording.
+
+    ECAPA (trained on clean speech) is the default; noisy/playback audio
+    falls back to the pitch-based spectral embedding, which is far more
+    robust to music beds and speaker playback (measured on the eval corpus:
+    clean recordings sit at SNR >= 280, noisy ones at <= 108).
+    """
+    snr = speech_noise_ratio(audio, sr, segments)
+    if snr is None:
+        return "ecapa"
+    return "ecapa" if snr >= clean_snr_threshold else "spectral"

@@ -26,6 +26,7 @@ export = [
     "torch>=2.2",
     "torchaudio>=2.2",
     "speechbrain>=1.0",
+    "onnxscript>=0.7.1",
 ]
 
 [project.scripts]

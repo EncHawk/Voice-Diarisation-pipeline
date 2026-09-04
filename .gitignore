@@ -23,5 +23,8 @@ SPEC.md
 
 evals.md
 evals/
+EVAL_REPORT.md
 scripts/run_evals.py
 scripts/_eval_worker.py
+models/ecapa.onnx.data
+models/sb_cache/

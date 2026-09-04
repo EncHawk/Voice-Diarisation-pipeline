@@ -115,13 +115,19 @@ def process_file(
 
     # 3. Embeddings
     emb_cfg = config.get("embeddings", {}) if isinstance(config.get("embeddings"), dict) else {}
+    min_dur = float(emb_cfg.get("min_segment_duration", 1.0))
+    space = str(emb_cfg.get("model", "auto"))
+    if space == "auto":
+        from ..diarization.embeddings import select_space
+
+        space = select_space(audio, sr, vad_segments, clean_snr_threshold=float(emb_cfg.get("clean_snr_threshold", 150.0)))
     extractor = EmbeddingExtractor(
         model_path=emb_cfg.get("model_path", "models/ecapa.onnx"),
         dim=int(emb_cfg.get("dimension", 192)),
+        space="spectral" if space == "spectral_fallback" or space == "spectral" else "ecapa",
     )
-    min_dur = float(emb_cfg.get("min_segment_duration", 1.0))
     records = extractor.embed_segments(audio, sr, vad_segments, min_duration=min_dur)
-    print(f"[pipeline] embeddings: {len(records)} records")
+    print(f"[pipeline] embeddings: {len(records)} records (space={space})")
 
     if not records:
         # No embeddings (all segments too short etc.) — create single speaker fallback
