@@ -1,0 +1,90 @@
+# Default configuration for diarization pipeline
+
+audio:
+  sample_rate: 16000
+  target_channels: 1  # mono
+
+vad:
+  model: "silero_vad"  # silero_vad | energy
+  threshold: 0.5
+  min_speech_duration_ms: 250
+  min_silence_duration_ms: 100
+  speech_pad_ms: 30
+  window_size_samples: 512  # @ 16kHz
+  use_onnx: true
+
+embeddings:
+  model: "ecapa_onnx"  # ecapa_onnx | spectral_fallback
+  model_path: "models/ecapa.onnx"
+  dimension: 192
+  min_segment_duration: 1.0  # seconds, shorter segments skipped for embedding
+
+clustering:
+  method: "agglomerative"
+  metric: "cosine"
+  distance_threshold: 0.55  # agglomerative distance threshold (1 - cosine similarity); 0.55 works for spectral fallback, 0.35 for ECAPA
+  linkage: "average"
+
+speaker_profile:
+  centroid_update_weight: 0.15  # EMA alpha for centroid
+  min_similarity_for_update: 0.55  # below this, embedding not used to update centroid
+
+gender:
+  enabled: true  # beta: pitch-based Man N / Woman N labels for unidentified speakers
+  male_max_hz: 160.0  # median F0 at or below this -> male
+  female_min_hz: 180.0  # median F0 at or above this -> female (band between = unknown)
+  f0_min_hz: 60.0
+  f0_max_hz: 400.0
+  clarity_threshold: 0.50  # autocorrelation peak required to trust a frame
+  max_seconds_per_speaker: 45.0
+  min_voiced_frames: 10
+
+transcription:
+  model_path: "models/ggml-base.en.bin"
+  whisper_cli: "whisper-cli"
+  language: "en"
+  threads: 4
+  chunk_duration: 30.0
+
+alignment:
+  iou_threshold: 0.1
+
+reasoning:
+  llm_backend: "llama_cpp"
+  llm_model_path: "models/LFM2-700M-Q5_K_M.gguf"
+  llama_cli: "llama-cli"
+  ctx_size: 4096
+  temp: 0.2
+  n_predict: 512
+  threads: 4
+  # trigger LLM only on meaningful windows
+  triggers:
+    - name_mention
+    - direct_address
+    - self_identification
+    - new_speaker
+  max_context_turns: 12
+  name_listing_window_turns: 48
+
+identity:
+  weights:
+    VOICE_SIMILARITY: 0.25
+    DIRECT_ADDRESS: 0.30
+    RESPONSE_TO_ADDRESS: 0.40
+    SELF_IDENTIFICATION: 0.45
+    INTRODUCTION: 0.35
+    CONVERSATIONAL_REFERENCE: 0.22
+    LLM_SELECTION: 0.45
+    PREVIOUS_IDENTIFICATION: 0.10
+    USER_CONFIRMATION: 0.95
+  # confidence states — 60% threshold as requested to take a name
+  thresholds:
+    candidate: 0.60
+    identified: 0.60
+  # status: UNKNOWN <0.60, IDENTIFIED >=0.60 (candidate == identified at 60%), CONFIRMED via user
+
+storage:
+  db_path: "diarization.db"
+
+pipeline:
+  output_dir: "outputs"

@@ -1,0 +1,22 @@
+__pycache__/
+*.py[cod]
+.venv/
+models/*.bin
+models/*.gguf
+models/*.onnx
+models/*.pt
+outputs/
+*.db
+*.db-journal
+.pytest_cache/
+.ruff_cache/
+.DS_Store
+audio_data/Shivalingaiah Colony 2.m4a
+
+grammars
+grammars/*
+
+tests/*
+
+RESULT.md
+SPEC.md

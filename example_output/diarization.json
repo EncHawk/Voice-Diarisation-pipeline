@@ -1,0 +1,433 @@
+{
+  "vad": [
+    {
+      "start": 0.53,
+      "end": 1.245,
+      "speech_probability": 0.5
+    },
+    {
+      "start": 2.47,
+      "end": 3.515,
+      "speech_probability": 0.5
+    },
+    {
+      "start": 3.92,
+      "end": 4.535,
+      "speech_probability": 0.5
+    },
+    {
+      "start": 5.37,
+      "end": 6.595,
+      "speech_probability": 0.549
+    },
+    {
+      "start": 6.92,
+      "end": 11.085,
+      "speech_probability": 0.5
+    },
+    {
+      "start": 11.75,
+      "end": 13.105,
+      "speech_probability": 0.5
+    },
+    {
+      "start": 13.58,
+      "end": 15.485,
+      "speech_probability": 0.5
+    },
+    {
+      "start": 15.86,
+      "end": 18.875,
+      "speech_probability": 0.5
+    },
+    {
+      "start": 19.2,
+      "end": 23.055,
+      "speech_probability": 0.5
+    },
+    {
+      "start": 24.16,
+      "end": 25.335,
+      "speech_probability": 0.5
+    },
+    {
+      "start": 26.06,
+      "end": 27.325,
+      "speech_probability": 0.5
+    },
+    {
+      "start": 27.7,
+      "end": 29.495,
+      "speech_probability": 0.5
+    },
+    {
+      "start": 30.16,
+      "end": 30.745,
+      "speech_probability": 0.5
+    },
+    {
+      "start": 31.19,
+      "end": 31.775,
+      "speech_probability": 0.5
+    },
+    {
+      "start": 33.01,
+      "end": 34.455,
+      "speech_probability": 0.5
+    },
+    {
+      "start": 35.19,
+      "end": 35.605,
+      "speech_probability": 0.5
+    },
+    {
+      "start": 36.19,
+      "end": 37.405,
+      "speech_probability": 0.604
+    },
+    {
+      "start": 37.97,
+      "end": 39.165,
+      "speech_probability": 0.5
+    },
+    {
+      "start": 39.7,
+      "end": 40.195,
+      "speech_probability": 0.5
+    },
+    {
+      "start": 41.42,
+      "end": 42.335,
+      "speech_probability": 0.5
+    },
+    {
+      "start": 42.89,
+      "end": 43.735,
+      "speech_probability": 0.5
+    },
+    {
+      "start": 44.2,
+      "end": 44.695,
+      "speech_probability": 0.5
+    },
+    {
+      "start": 45.19,
+      "end": 45.545,
+      "speech_probability": 0.5
+    },
+    {
+      "start": 45.99,
+      "end": 47.305,
+      "speech_probability": 0.5
+    }
+  ],
+  "embeddings": [
+    {
+      "segment_id": "seg_0000",
+      "speaker_id": "speaker_3",
+      "start": 0.53,
+      "end": 1.245
+    },
+    {
+      "segment_id": "seg_0001",
+      "speaker_id": "speaker_2",
+      "start": 2.47,
+      "end": 3.5149999999999997
+    },
+    {
+      "segment_id": "seg_0002",
+      "speaker_id": "speaker_3",
+      "start": 3.9200000000000004,
+      "end": 4.535
+    },
+    {
+      "segment_id": "seg_0003",
+      "speaker_id": "speaker_1",
+      "start": 5.37,
+      "end": 6.595000000000001
+    },
+    {
+      "segment_id": "seg_0004",
+      "speaker_id": "speaker_3",
+      "start": 6.92,
+      "end": 11.084999999999999
+    },
+    {
+      "segment_id": "seg_0005",
+      "speaker_id": "speaker_3",
+      "start": 11.75,
+      "end": 13.104999999999999
+    },
+    {
+      "segment_id": "seg_0006",
+      "speaker_id": "speaker_3",
+      "start": 13.58,
+      "end": 15.485
+    },
+    {
+      "segment_id": "seg_0007",
+      "speaker_id": "speaker_3",
+      "start": 15.860000000000001,
+      "end": 18.875
+    },
+    {
+      "segment_id": "seg_0008",
+      "speaker_id": "speaker_3",
+      "start": 19.2,
+      "end": 23.055
+    },
+    {
+      "segment_id": "seg_0009",
+      "speaker_id": "speaker_4",
+      "start": 24.16,
+      "end": 25.335
+    },
+    {
+      "segment_id": "seg_0010",
+      "speaker_id": "speaker_3",
+      "start": 26.06,
+      "end": 27.325000000000003
+    },
+    {
+      "segment_id": "seg_0011",
+      "speaker_id": "speaker_3",
+      "start": 27.7,
+      "end": 29.495
+    },
+    {
+      "segment_id": "seg_0012",
+      "speaker_id": "speaker_3",
+      "start": 30.16,
+      "end": 30.745
+    },
+    {
+      "segment_id": "seg_0013",
+      "speaker_id": "speaker_1",
+      "start": 31.189999999999998,
+      "end": 31.775000000000002
+    },
+    {
+      "segment_id": "seg_0014",
+      "speaker_id": "speaker_2",
+      "start": 33.01,
+      "end": 34.455
+    },
+    {
+      "segment_id": "seg_0015",
+      "speaker_id": "speaker_5",
+      "start": 35.19,
+      "end": 35.605000000000004
+    },
+    {
+      "segment_id": "seg_0016",
+      "speaker_id": "speaker_1",
+      "start": 36.19,
+      "end": 37.405
+    },
+    {
+      "segment_id": "seg_0017",
+      "speaker_id": "speaker_1",
+      "start": 37.97,
+      "end": 39.165
+    },
+    {
+      "segment_id": "seg_0018",
+      "speaker_id": "speaker_3",
+      "start": 39.699999999999996,
+      "end": 40.195
+    },
+    {
+      "segment_id": "seg_0019",
+      "speaker_id": "speaker_1",
+      "start": 41.42,
+      "end": 42.335
+    },
+    {
+      "segment_id": "seg_0020",
+      "speaker_id": "speaker_5",
+      "start": 42.89,
+      "end": 43.735
+    },
+    {
+      "segment_id": "seg_0021",
+      "speaker_id": "speaker_3",
+      "start": 44.199999999999996,
+      "end": 44.695
+    },
+    {
+      "segment_id": "seg_0022",
+      "speaker_id": "speaker_2",
+      "start": 45.19,
+      "end": 45.545
+    },
+    {
+      "segment_id": "seg_0023",
+      "speaker_id": "speaker_1",
+      "start": 45.99,
+      "end": 47.305
+    }
+  ],
+  "profiles": {
+    "speaker_1": {
+      "speaker_id": "speaker_1",
+      "display_name": "Ted",
+      "status": "identified",
+      "sample_count": 6,
+      "segments": [
+        "seg_0003",
+        "seg_0013",
+        "seg_0016",
+        "seg_0017",
+        "seg_0019",
+        "seg_0023"
+      ],
+      "candidate_names": [],
+      "confidence": 0.674,
+      "candidate_name": "Ted",
+      "name": "Ted",
+      "evidence": [
+        {
+          "type": "response_to_address",
+          "speaker": "speaker_1",
+          "candidate_name": "Ted",
+          "confidence": 0.7,
+          "evidence": "speaker_1 responded after speaker_2 addressed Ted",
+          "segment_index": 5,
+          "segment_id": "seg_0005",
+          "source_evidence": {
+            "type": "direct_address",
+            "speaker": "speaker_2",
+            "target_name": "Ted",
+            "confidence": 0.7,
+            "evidence": "speaker_2 appears to address Ted: \"Okay, I look forward to lunching with you, Ted.\"",
+            "segment_id": "seg_0004",
+            "segment_index": 4
+          },
+          "weight": 0.4
+        }
+      ],
+      "gender": "female",
+      "median_f0_hz": 355.6
+    },
+    "speaker_2": {
+      "speaker_id": "speaker_2",
+      "display_name": "Speaker 2",
+      "status": "unknown",
+      "sample_count": 3,
+      "segments": [
+        "seg_0001",
+        "seg_0014",
+        "seg_0022"
+      ],
+      "candidate_names": [],
+      "confidence": 0.0,
+      "candidate_name": null,
+      "name": null,
+      "evidence": [],
+      "gender": "female",
+      "median_f0_hz": 228.6
+    },
+    "speaker_3": {
+      "speaker_id": "speaker_3",
+      "display_name": "Speaker 3",
+      "status": "unknown",
+      "sample_count": 12,
+      "segments": [
+        "seg_0000",
+        "seg_0002",
+        "seg_0004",
+        "seg_0005",
+        "seg_0006",
+        "seg_0007",
+        "seg_0008",
+        "seg_0010",
+        "seg_0011",
+        "seg_0012",
+        "seg_0018",
+        "seg_0021"
+      ],
+      "candidate_names": [],
+      "confidence": 0.0,
+      "candidate_name": null,
+      "name": null,
+      "evidence": [],
+      "gender": "female",
+      "median_f0_hz": 258.1
+    },
+    "speaker_4": {
+      "speaker_id": "speaker_4",
+      "display_name": "Speaker 4",
+      "status": "unknown",
+      "sample_count": 1,
+      "segments": [
+        "seg_0009"
+      ],
+      "candidate_names": [],
+      "confidence": 0.0,
+      "candidate_name": null,
+      "name": null,
+      "evidence": [],
+      "gender": "male",
+      "median_f0_hz": 80.8
+    },
+    "speaker_5": {
+      "speaker_id": "speaker_5",
+      "display_name": "Speaker 5",
+      "status": "unknown",
+      "sample_count": 2,
+      "segments": [
+        "seg_0015",
+        "seg_0020"
+      ],
+      "candidate_names": [],
+      "confidence": 0.0,
+      "candidate_name": null,
+      "name": null,
+      "evidence": [],
+      "gender": "female",
+      "median_f0_hz": 313.7
+    }
+  },
+  "whisper": [
+    {
+      "start": 0.0,
+      "end": 21.56,
+      "text": "I don't care, Ted, you're coming to lunch with me and my mother."
+    },
+    {
+      "start": 21.56,
+      "end": 24.18,
+      "text": "Okay, sounds great."
+    },
+    {
+      "start": 24.18,
+      "end": 26.12,
+      "text": "Spoiler alert, I'll make you a BLT."
+    },
+    {
+      "start": 26.12,
+      "end": 31.28,
+      "text": "What? Crown and anchor, at two."
+    },
+    {
+      "start": 31.28,
+      "end": 36.28,
+      "text": "Okay, I look forward to lunching with you, Ted."
+    },
+    {
+      "start": 36.28,
+      "end": 39.88,
+      "text": "I heard back as mom, hey fellas, say hi."
+    },
+    {
+      "start": 39.88,
+      "end": 41.48,
+      "text": "I heard back as mom."
+    },
+    {
+      "start": 41.48,
+      "end": 47.72,
+      "text": "Hello, boys, and the need's not Rebecca's mom, it's Deborah, I'm a working progress."
+    }
+  ]
+}
